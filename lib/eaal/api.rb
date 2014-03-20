@@ -6,7 +6,7 @@
 #      puts character.name
 #  }
 class EAAL::API
-  attr_accessor :keyid, :vcode, :scope
+  attr_accessor :keyid, :vcode, :scope, :cache_only
 
   # constructor
   # Expects:
@@ -27,7 +27,7 @@ class EAAL::API
   def method_missing(method, *args)
     scope = self.scope
     args_hash = args.first
-    cache_only = (args_hash && args_hash.delete(:cache_only)) || false
+    cache_only = (args_hash && args_hash.delete(:cache_only)) || self.cache_only || false
     args_hash = {} unless args_hash
     self.request_xml(scope, method.id2name, args_hash, cache_only)
   end
