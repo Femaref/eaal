@@ -39,7 +39,7 @@ class EAAL::API
   # * opts (Hash)
   def request_xml(scope, name, opts, cache_only = false)
     opts = EAAL.additional_request_parameters.merge(opts)
-    xml = EAAL.cache.load(self.keyid, self.vcode, scope, name,opts)
+    xml = EAAL.cache.load(self.keyid, self.vcode, scope, name, opts)
 
     if (not xml) && (not cache_only)
       

@@ -16,6 +16,10 @@ class EAAL::Cache::FileCache
     end
     @basepath = basepath
   end
+  
+  def crest_name(path)
+    "#{@basepath}/#{path.join('/')}.json"
+  end
 
   # create the path/filename for the cache file
   def filename(userid, apikey, scope, name, args)
@@ -28,6 +32,19 @@ class EAAL::Cache::FileCache
     ret += args.sort.flatten.collect{ |e| e.to_s }.join('_')
     hash = ret.gsub(/_$/,'')
     "#{@basepath}#{userid}/#{apikey}/#{scope}/#{name}/Request_#{hash}.xml"
+  end
+  
+  def load_crest(path)
+    filename = crest_filename(path)
+    
+    ret = false
+    
+    if File.exists?(filename)
+      content = File.open(filename).read
+      ret = content if self.validate_crest(content)
+    end
+    
+    ret              
   end
 
   # load xml if available, return false if not available, or cachedUntil ran out
@@ -63,5 +80,11 @@ class EAAL::Cache::FileCache
     filename = self.filename(userid, apikey,scope,name,args)
     FileUtils.mkdir_p(File.dirname(filename))
     File.open(filename,'wb') { |f| f.print xml }
+  end
+  
+  def save_crest(path, content)
+    filename = crest_filename(path)
+    FileUtils.mkdir_p(File.dirname(filename))
+    File.open(filename,'wb') { |f| f.print content }
   end
 end

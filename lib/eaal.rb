@@ -24,6 +24,7 @@ require 'hpricot'
 require 'cgi'
 require 'faraday'
 require 'time'
+require 'json'
 
 # And now EAAL stuff
 require 'eaal/version'
@@ -35,10 +36,10 @@ require 'eaal/result'
 require 'eaal/rowset'
 
 module EAAL
-  VERSION = "0.1.12" # fix for Hoe.spec 2.x
   @@version_string = "EAAL" +  VERSION # the version string, used as client name in http requests
 
   @@api_base = "https://api.eveonline.com"  # the url used as basis for all requests, you might want to use gatecamper url or a personal proxy instead
+  @@crest_base = "https://public-crest.eveonline.com" # the url used as basis for all crest requests
   @@additional_request_parameters = {}       # hash, if :key => value pairs are added those will be added to each request
   @@cache = EAAL::Cache::NoCache.new         # caching object, see EAAL::Cache::FileCache for an Example
 
@@ -54,6 +55,14 @@ module EAAL
   def self.api_base=(val)
     @@api_base = val
   end
+  
+  def self.crest_base
+    @@crest_base
+  end
+  def self.crest_base=(val)
+    @@crest_base = val
+  end
+  
   def self.additional_request_parameters
     @@additional_request_parameters
   end
@@ -68,3 +77,4 @@ module EAAL
   end
 end
 require 'eaal/api'
+require 'eaal/crest'
