@@ -26,6 +26,7 @@ require 'faraday'
 require 'time'
 
 # And now EAAL stuff
+require 'eaal/version'
 require 'eaal/cache/base'
 require 'eaal/cache/file'
 require 'eaal/cache/memcached'
